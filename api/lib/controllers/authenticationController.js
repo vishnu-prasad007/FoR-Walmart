@@ -22,7 +22,6 @@ const login = (request, response) => __awaiter(void 0, void 0, void 0, function*
     console.log("inside login controller");
     var emailPhoneNo = request.body.emailPhoneNo;
     var password = request.body.password;
-    var fcmDeviceToken = request.body.fcmDeviceToken;
     try {
         // get UserAuthentication Repository
         let userAuthenticationRepository = connection.getRepository(authentication_1.UserAuthentication);
@@ -32,9 +31,6 @@ const login = (request, response) => __awaiter(void 0, void 0, void 0, function*
         console.log(user.user);
         console.log(`User id ${user.user}`);
         const accessToken = yield tokens_1.createAcessToken(user.user.id);
-        yield queryRunner.connect();
-        user.fcmDeviceToken = fcmDeviceToken;
-        user = yield queryRunner.manager.save(user);
         return response.status(http_status_codes_1.StatusCodes.OK).json({
             message: "Login Successful",
             data: {

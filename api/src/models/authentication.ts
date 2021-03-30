@@ -17,7 +17,4 @@ export class UserAuthentication {
     @JoinColumn()
     user: User;
 
-    @Column({type:"varchar"})
-    fcmDeviceToken:String;
-
 }

@@ -9,10 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.followUser = exports.getUser = void 0;
+exports.getProfile = exports.followUser = exports.getUser = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const connection_1 = require("../../config/connection");
 const follower_1 = require("../../models/follower");
+const order_1 = require("../../models/products/order");
 const user_1 = require("../../models/user");
 const exception_1 = require("../../utils/exception");
 const getUser = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
@@ -63,3 +64,32 @@ const followUser = (request, response) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.followUser = followUser;
+const getProfile = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    let profileUserId = request.params.userId;
+    try {
+        let userRepository = connection_1.connection.getRepository(user_1.User);
+        let profile = yield userRepository.findOne({ where: { id: profileUserId } });
+        if (profile != undefined && profile.isProfilePublic) {
+            let orderRepository = connection_1.connection.getRepository(order_1.Orders);
+            profile.orders = yield orderRepository.find({ where: { orderedBy: profile }, relations: ['item'] });
+            profile.orders = profile.orders.filter(filterPrivateOrders);
+            if (profile.orders.length == 0)
+                profile.orders = null;
+            return response.status(http_status_codes_1.StatusCodes.OK).json({ profile });
+        }
+        throw new exception_1.CodeBrewingApiException("Profile not found", http_status_codes_1.StatusCodes.NOT_FOUND);
+    }
+    catch (error) {
+        console.log(error);
+        if (error instanceof exception_1.CodeBrewingApiException) {
+            response.status(error.HttpStatusCode).json({ message: error.message });
+        }
+        else {
+            response.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ message: http_status_codes_1.ReasonPhrases.INTERNAL_SERVER_ERROR });
+        }
+    }
+});
+exports.getProfile = getProfile;
+const filterPrivateOrders = (order) => {
+    return order.isPublic;
+};

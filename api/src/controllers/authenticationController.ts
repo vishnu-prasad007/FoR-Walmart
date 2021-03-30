@@ -13,8 +13,6 @@ const login = async(request:Request,response:Response) =>{
     console.log("inside login controller");
     var emailPhoneNo = request.body.emailPhoneNo;
     var password = request.body.password;
-    var fcmDeviceToken = request.body.fcmDeviceToken
-
     try {
         // get UserAuthentication Repository
         let userAuthenticationRepository = connection.getRepository(UserAuthentication);
@@ -27,9 +25,6 @@ const login = async(request:Request,response:Response) =>{
         console.log(`User id ${user.user}`);
 
         const accessToken = await createAcessToken(user.user.id);
-        await queryRunner.connect();
-        user.fcmDeviceToken = fcmDeviceToken;
-        user = await queryRunner.manager.save(user);
         return response.status(StatusCodes.OK).json({
             message:"Login Successful",
             data:{
@@ -39,6 +34,7 @@ const login = async(request:Request,response:Response) =>{
         });
 
     } catch (error) {
+
         console.log(error);
         if (error instanceof CodeBrewingApiException) {
           return  response.status(error.HttpStatusCode).json({ message: error.message });

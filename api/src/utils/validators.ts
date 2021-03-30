@@ -28,7 +28,7 @@ const loginValidator = (request:Request,response:Response,next) =>{
         return response.status(StatusCodes.BAD_REQUEST).json({error:"Invalid email/phone or Password"});
     }
 
-    if((emailPhoneNo.includes("@") || emailPhoneNo.length == 10) && (password.length > 4) && fcmDeviceToken != ""){
+    if((emailPhoneNo.includes("@") || emailPhoneNo.length == 10) && (password.length > 4)){
         console.log("success jfhjghj");
         next();
     } else {

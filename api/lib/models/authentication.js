@@ -31,10 +31,6 @@ __decorate([
     typeorm_1.JoinColumn(),
     __metadata("design:type", user_1.User)
 ], UserAuthentication.prototype, "user", void 0);
-__decorate([
-    typeorm_1.Column({ type: "varchar" }),
-    __metadata("design:type", String)
-], UserAuthentication.prototype, "fcmDeviceToken", void 0);
 UserAuthentication = __decorate([
     typeorm_1.Entity()
 ], UserAuthentication);
