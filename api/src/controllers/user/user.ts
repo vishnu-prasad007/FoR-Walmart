@@ -31,8 +31,8 @@ const getUser = async(request:Request,response:Response) => {
 
 const followUser = async(request:Request,response:Response) => {
     let userId = response.locals.userId;
-    let followingUserId = request.body.followingUserId;
-
+    let followingUserId = request.params.followingUserId;
+    console.log(followingUserId);
     try {
         let userRespository = connection.getRepository(User);
         let followUserRepository = connection.getRepository(Follower);
@@ -42,14 +42,19 @@ const followUser = async(request:Request,response:Response) => {
             userRespository.findOne({where:{id:followingUserId}})
         ]);
 
+        console.log(follower);
+        console.log(followingUser);
+
         let newFollower = followUserRepository.create({
             followedBy:follower,
             following:followingUser
         })
         await queryRunner.connect();
-        newFollower = await queryRunner.manager.save(newFollower);
+        followingUser.followers = [];
         followingUser.followers.push(newFollower);
-        
+        newFollower = await queryRunner.manager.save(newFollower);
+        console.log(newFollower);
+        return response.status(StatusCodes.OK).json({message:`You started following ${newFollower.following.name}`});
 
     } catch(error) {
         console.log(error);
@@ -62,7 +67,7 @@ const followUser = async(request:Request,response:Response) => {
 }
 
 
-const getProfile = async(request:Request,response:Response) =>{
+const getProfile = async(request:Request,response:Response) => {
 
     let profileUserId = request.params.userId;
     try{

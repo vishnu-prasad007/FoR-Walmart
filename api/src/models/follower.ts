@@ -1,4 +1,4 @@
-import {Column,Entity,JoinColumn,ManyToMany,ManyToOne,PrimaryGeneratedColumn} from 'typeorm';
+import {Column,Entity,JoinColumn,JoinTable,ManyToMany,ManyToOne,PrimaryGeneratedColumn} from 'typeorm';
 import { User } from './user';
 
 @Entity()
@@ -10,7 +10,7 @@ export class Follower {
     @ManyToOne(()=>User,User=>User.followedBy)
     followedBy:User
 
-    @ManyToMany(type=>User,user =>user.followers)
-    @JoinColumn()
+    @ManyToOne(type=>User,user =>user.followers)
+    @JoinTable()
     following:User
 }

@@ -23,8 +23,8 @@ __decorate([
     __metadata("design:type", user_1.User)
 ], Follower.prototype, "followedBy", void 0);
 __decorate([
-    typeorm_1.ManyToMany(type => user_1.User, user => user.followers),
-    typeorm_1.JoinColumn(),
+    typeorm_1.ManyToOne(type => user_1.User, user => user.followers),
+    typeorm_1.JoinTable(),
     __metadata("design:type", user_1.User)
 ], Follower.prototype, "following", void 0);
 Follower = __decorate([

@@ -54,7 +54,7 @@ const agreeToTerms = async (request: Request, response: Response) => {
         var user = await userRespository.findOne({ where: { id: userId } });
         var c = contactList(contacts);
         let musers = await findMatchedUser(c);
-        // musers = musers.filter(filterprivateProfile);
+         musers = musers.filter(filterprivateProfile);
         user.termsandConditionStatus = true;
         user.isProfilePublic = true;
         await queryRunner.connect();
@@ -69,6 +69,20 @@ const agreeToTerms = async (request: Request, response: Response) => {
         }
     }
 }
+
+
+const shareOrder =  async(request:Request,response:Response) => {
+    var userId = response.locals.userId;
+    var orderId = request.params.order_id;
+
+    try {
+        
+    } catch(error) {
+
+    }
+
+}
+
 
 
 const contactList = (contacts: any) => {

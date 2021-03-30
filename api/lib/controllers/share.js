@@ -58,7 +58,7 @@ const agreeToTerms = (request, response) => __awaiter(void 0, void 0, void 0, fu
         var user = yield userRespository.findOne({ where: { id: userId } });
         var c = contactList(contacts);
         let musers = yield contacts_1.findMatchedUser(c);
-        // musers = musers.filter(filterprivateProfile);
+        musers = musers.filter(filterprivateProfile);
         user.termsandConditionStatus = true;
         user.isProfilePublic = true;
         yield connection_1.queryRunner.connect();
@@ -76,6 +76,14 @@ const agreeToTerms = (request, response) => __awaiter(void 0, void 0, void 0, fu
     }
 });
 exports.agreeToTerms = agreeToTerms;
+const shareOrder = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    var userId = response.locals.userId;
+    var orderId = request.params.order_id;
+    try {
+    }
+    catch (error) {
+    }
+});
 const contactList = (contacts) => {
     return JSON.parse(contacts);
 };

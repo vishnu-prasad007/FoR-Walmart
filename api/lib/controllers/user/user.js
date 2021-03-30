@@ -37,7 +37,8 @@ const getUser = (request, response) => __awaiter(void 0, void 0, void 0, functio
 exports.getUser = getUser;
 const followUser = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     let userId = response.locals.userId;
-    let followingUserId = request.body.followingUserId;
+    let followingUserId = request.params.followingUserId;
+    console.log(followingUserId);
     try {
         let userRespository = connection_1.connection.getRepository(user_1.User);
         let followUserRepository = connection_1.connection.getRepository(follower_1.Follower);
@@ -45,13 +46,18 @@ const followUser = (request, response) => __awaiter(void 0, void 0, void 0, func
             userRespository.findOne({ where: { id: userId } }),
             userRespository.findOne({ where: { id: followingUserId } })
         ]);
+        console.log(follower);
+        console.log(followingUser);
         let newFollower = followUserRepository.create({
             followedBy: follower,
             following: followingUser
         });
         yield connection_1.queryRunner.connect();
-        newFollower = yield connection_1.queryRunner.manager.save(newFollower);
+        followingUser.followers = [];
         followingUser.followers.push(newFollower);
+        newFollower = yield connection_1.queryRunner.manager.save(newFollower);
+        console.log(newFollower);
+        return response.status(http_status_codes_1.StatusCodes.OK).json({ message: `You started following ${newFollower.following.name}` });
     }
     catch (error) {
         console.log(error);

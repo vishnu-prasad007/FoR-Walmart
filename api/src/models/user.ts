@@ -1,5 +1,5 @@
 import { type } from 'node:os';
-import{Entity,Column,PrimaryGeneratedColumn, OneToOne, OneToMany} from 'typeorm'
+import{Entity,Column,PrimaryGeneratedColumn, OneToOne, OneToMany, JoinTable,} from 'typeorm'
 import { UserAuthentication } from './authentication';
 import { Follower } from './follower';
 import { Orders } from './products/order';

@@ -8,3 +8,4 @@ const userRouter = express.Router();
 exports.userRouter = userRouter;
 userRouter.get('/me', tokens_1.verifyAccessToken, user_1.getUser);
 userRouter.get('/profile/:userId', tokens_1.verifyAccessToken, user_1.getProfile);
+userRouter.post('/:followingUserId/follow', tokens_1.verifyAccessToken, user_1.followUser);
