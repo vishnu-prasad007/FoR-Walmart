@@ -1,0 +1,10 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.shareRouter = void 0;
+const express = require("express");
+const share_1 = require("../controllers/share");
+const tokens_1 = require("../services/tokens");
+const shareRouter = express.Router();
+exports.shareRouter = shareRouter;
+shareRouter.post("/terms", tokens_1.verifyAccessToken, share_1.shareTerms);
+shareRouter.post("/agree", tokens_1.verifyAccessToken, share_1.agreeToTerms);
