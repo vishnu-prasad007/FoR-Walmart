@@ -26,9 +26,8 @@ exports.validate = validate;
 const loginValidator = (request, response, next) => {
     var emailPhoneNo = request.body.emailPhoneNo;
     let password = request.body.password;
-    let fcmDeviceToken = request.body.fcmDeviceToken;
     console.log(emailPhoneNo);
-    if (emailPhoneNo == undefined || password == undefined || fcmDeviceToken == undefined) {
+    if (emailPhoneNo == undefined || password == undefined) {
         return response.status(http_status_codes_1.StatusCodes.BAD_REQUEST).json({ error: "Invalid email/phone or Password" });
     }
     if ((emailPhoneNo.includes("@") || emailPhoneNo.length == 10) && (password.length > 4)) {

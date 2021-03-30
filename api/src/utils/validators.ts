@@ -20,11 +20,10 @@ const validate = validations => {
 const loginValidator = (request:Request,response:Response,next) =>{
     var emailPhoneNo = request.body.emailPhoneNo;
     let password = request.body.password;
-    let fcmDeviceToken = request.body.fcmDeviceToken;
 
     console.log(emailPhoneNo);
 
-    if(emailPhoneNo == undefined || password == undefined || fcmDeviceToken == undefined) {
+    if(emailPhoneNo == undefined || password == undefined) {
         return response.status(StatusCodes.BAD_REQUEST).json({error:"Invalid email/phone or Password"});
     }
 

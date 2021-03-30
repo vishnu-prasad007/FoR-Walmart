@@ -4,17 +4,23 @@ import { User } from '../models/user';
 
 
 interface Contact{
-    emailPhoneNo:string
+    phoneEmail:string
 }
 
-const findMatchedUser = async (user:User,contacts:Contact[]) => {
+const findMatchedUser = async (contacts:Contact[]) => {
+        let userAuthenticationRespository =  connection.getRepository(UserAuthentication);
+        let matchedUsers:User[] = [];
 
-        let userAuthenticationRespository = await connection.getRepository(UserAuthentication);
-        let matchedUsers:User[];
-        contacts.forEach(async (contact)=>{
-            let userAuthentication = await userAuthenticationRespository.findOne({where:{emailPhoneNo:contact.emailPhoneNo}});
+        for (let index = 0; index < contacts.length; index++) {
+            const contact = contacts[index];
+            let userAuthentication = await userAuthenticationRespository.findOne({where:{emailPhoneNo:contact.phoneEmail,},relations:['user']});
             if(userAuthentication != null || userAuthentication != undefined) {
                 matchedUsers.push(userAuthentication.user);
             }
-        });
+        }
+        return matchedUsers;
+}
+
+export{ 
+    findMatchedUser
 }

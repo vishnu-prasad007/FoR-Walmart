@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { connection, queryRunner } from '../config/connection';
 import { User } from '../models/user';
+import { findMatchedUser } from '../services/contacts';
 import { CodeBrewingApiException } from '../utils/exception';
 
 
@@ -25,7 +26,7 @@ const shareTerms = async (request: Request, response: Response) => {
                 shareUser.isProfilePublic = true;
                 await queryRunner.connect();
                 shareUser = await queryRunner.manager.save(shareUser);
-                return response.status(StatusCodes.OK).json({ message: "Your profile is private, by clicking next we switch your profile to public", errorCode: Profile_Private_To_Public });
+                return response.status(StatusCodes.OK).json({ message: "Your profile is private, by clicking share we switch your profile to public", errorCode: Profile_Private_To_Public });
             }
             return response.status(StatusCodes.OK).json({ message: "Happy sharing", errorCode: Happy_Sharing });
         } else {
@@ -44,18 +45,22 @@ const shareTerms = async (request: Request, response: Response) => {
 }
 
 
-const agreeToTerms = async (request:Request,response:Response) => {
+const agreeToTerms = async (request: Request, response: Response) => {
     var userId = response.locals.userId;
-    
+    var contacts = request.body.contacts;
+
     try {
         let userRespository = await connection.getRepository(User);
-        var user =  await userRespository.findOne({where:{id:userId}});
+        var user = await userRespository.findOne({ where: { id: userId } });
+        var c = contactList(contacts);
+        let musers = await findMatchedUser(c);
+        // musers = musers.filter(filterprivateProfile);
         user.termsandConditionStatus = true;
         user.isProfilePublic = true;
         await queryRunner.connect();
         await queryRunner.manager.save(user);
-        return response.status(StatusCodes.OK).json({message:"Thank You"});
-    } catch(error){
+        return response.status(StatusCodes.OK).json({ message: "Thank You", users: musers });
+    } catch (error) {
         console.log(error);
         if (error instanceof CodeBrewingApiException) {
             return response.status(error.HttpStatusCode).json({ message: error.message });
@@ -63,6 +68,15 @@ const agreeToTerms = async (request:Request,response:Response) => {
             return response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
         }
     }
+}
+
+
+const contactList = (contacts: any) => {
+    return JSON.parse(contacts);
+}
+
+const filterprivateProfile = (user:User) =>{
+    return user.isProfilePublic;
 }
 
 export {
