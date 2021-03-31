@@ -25,7 +25,7 @@ export class User{
     @Column({type:"boolean",default:false})
     isProfilePublic:boolean
 
-    @OneToMany(()=>Follower,follower=>follower.followedBy)
+    @OneToMany(type=>Follower,follower=>follower.followedBy)
     followedBy:Follower;
 
     @OneToMany(type=>Follower,follower => follower.following)

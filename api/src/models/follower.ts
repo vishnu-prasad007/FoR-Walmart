@@ -7,7 +7,7 @@ export class Follower {
     @PrimaryGeneratedColumn()
     id:number;
 
-    @ManyToOne(()=>User,User=>User.followedBy)
+    @ManyToOne(type=>User,User=>User.followedBy)
     followedBy:User
 
     @ManyToOne(type=>User,user =>user.followers)

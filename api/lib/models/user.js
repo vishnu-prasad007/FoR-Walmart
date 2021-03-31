@@ -41,7 +41,7 @@ __decorate([
     __metadata("design:type", Boolean)
 ], User.prototype, "isProfilePublic", void 0);
 __decorate([
-    typeorm_1.OneToMany(() => follower_1.Follower, follower => follower.followedBy),
+    typeorm_1.OneToMany(type => follower_1.Follower, follower => follower.followedBy),
     __metadata("design:type", follower_1.Follower)
 ], User.prototype, "followedBy", void 0);
 __decorate([

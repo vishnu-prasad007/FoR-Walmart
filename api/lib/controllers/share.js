@@ -9,11 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.shareTerms = exports.agreeToTerms = void 0;
+exports.shareOrder = exports.shareTerms = exports.agreeToTerms = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const connection_1 = require("../config/connection");
+const order_1 = require("../models/products/order");
 const user_1 = require("../models/user");
 const contacts_1 = require("../services/contacts");
+const followers_1 = require("../services/followers");
 const exception_1 = require("../utils/exception");
 const Profile_Private_To_Public = 2001;
 const Happy_Sharing = 2000;
@@ -80,10 +82,29 @@ const shareOrder = (request, response) => __awaiter(void 0, void 0, void 0, func
     var userId = response.locals.userId;
     var orderId = request.params.order_id;
     try {
+        // user Repository
+        let userRepository = connection_1.connection.getRepository(user_1.User);
+        // order repository
+        let orderRepository = connection_1.connection.getRepository(order_1.Orders);
+        let sharingUser = yield userRepository.findOne({ where: { id: userId } });
+        let sharingOrder = yield orderRepository.findOne({ where: { id: orderId }, relations: ['item'] });
+        yield connection_1.queryRunner.connect();
+        sharingOrder.isPublic = true;
+        sharingOrder = yield connection_1.queryRunner.manager.save(sharingOrder);
+        // TODO => now trigger email service for followers
+        let followers = yield followers_1.getUserFollowers(sharingUser);
     }
     catch (error) {
+        console.log(error);
+        if (error instanceof exception_1.CodeBrewingApiException) {
+            return response.status(error.HttpStatusCode).json({ message: error.message });
+        }
+        else {
+            return response.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ message: http_status_codes_1.ReasonPhrases.INTERNAL_SERVER_ERROR });
+        }
     }
 });
+exports.shareOrder = shareOrder;
 const contactList = (contacts) => {
     return JSON.parse(contacts);
 };

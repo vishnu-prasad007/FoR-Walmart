@@ -19,7 +19,7 @@ __decorate([
     __metadata("design:type", Number)
 ], Follower.prototype, "id", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => user_1.User, User => User.followedBy),
+    typeorm_1.ManyToOne(type => user_1.User, User => User.followedBy),
     __metadata("design:type", user_1.User)
 ], Follower.prototype, "followedBy", void 0);
 __decorate([

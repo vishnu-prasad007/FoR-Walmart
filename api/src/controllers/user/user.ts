@@ -47,12 +47,13 @@ const followUser = async(request:Request,response:Response) => {
 
         let newFollower = followUserRepository.create({
             followedBy:follower,
-            following:followingUser
+            following:followingUser,
         })
         await queryRunner.connect();
         followingUser.followers = [];
         followingUser.followers.push(newFollower);
         newFollower = await queryRunner.manager.save(newFollower);
+        await queryRunner.manager.save(followingUser);
         console.log(newFollower);
         return response.status(StatusCodes.OK).json({message:`You started following ${newFollower.following.name}`});
 

@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { connection, queryRunner } from '../config/connection';
+import { Orders } from '../models/products/order';
 import { User } from '../models/user';
 import { findMatchedUser } from '../services/contacts';
+import { getUserFollowersEmailAddressPhoneNo } from '../services/followers';
 import { CodeBrewingApiException } from '../utils/exception';
 
 
@@ -76,9 +78,28 @@ const shareOrder =  async(request:Request,response:Response) => {
     var orderId = request.params.order_id;
 
     try {
-        
-    } catch(error) {
+        // user Repository
+        let userRepository = connection.getRepository(User);
+        // order repository
+        let orderRepository = connection.getRepository(Orders);
 
+        let sharingUser = await userRepository.findOne({where:{id:userId}});
+        let sharingOrder = await orderRepository.findOne({where:{id:orderId},relations:['item']});
+        await queryRunner.connect()
+        sharingOrder.isPublic = true;
+        sharingOrder = await queryRunner.manager.save(sharingOrder); 
+        
+        // TODO => now trigger email service for followers
+        let followerEmail = await getUserFollowersEmailAddressPhoneNo(sharingUser);
+        
+
+    } catch(error) {
+        console.log(error);
+        if (error instanceof CodeBrewingApiException) {
+            return response.status(error.HttpStatusCode).json({ message: error.message });
+        } else {
+            return response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
+        }
     }
 
 }
@@ -96,4 +117,5 @@ const filterprivateProfile = (user:User) =>{
 export {
     agreeToTerms,
     shareTerms,
+    shareOrder
 }

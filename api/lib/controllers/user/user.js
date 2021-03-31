@@ -50,12 +50,13 @@ const followUser = (request, response) => __awaiter(void 0, void 0, void 0, func
         console.log(followingUser);
         let newFollower = followUserRepository.create({
             followedBy: follower,
-            following: followingUser
+            following: followingUser,
         });
         yield connection_1.queryRunner.connect();
         followingUser.followers = [];
         followingUser.followers.push(newFollower);
         newFollower = yield connection_1.queryRunner.manager.save(newFollower);
+        yield connection_1.queryRunner.manager.save(followingUser);
         console.log(newFollower);
         return response.status(http_status_codes_1.StatusCodes.OK).json({ message: `You started following ${newFollower.following.name}` });
     }
