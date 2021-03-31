@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserFollowersEmailAddressPhoneNo = void 0;
+exports.getFollowingUsers = exports.getUserFollowersEmailAddressPhoneNo = void 0;
 const connection_1 = require("../config/connection");
 const authentication_1 = require("../models/authentication");
 const follower_1 = require("../models/follower");
@@ -26,3 +26,11 @@ const getUserFollowersEmailAddressPhoneNo = (user) => __awaiter(void 0, void 0, 
     return userEmail.emailPhoneNo;
 });
 exports.getUserFollowersEmailAddressPhoneNo = getUserFollowersEmailAddressPhoneNo;
+const getFollowingUsers = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    let userRepository = connection_1.connection.getRepository(user_1.User);
+    let followUserRepository = connection_1.connection.getRepository(follower_1.Follower);
+    let follower = yield followUserRepository.query(`SELECT * FROM follower WHERE followedById = ${userId}`);
+    let userT = yield userRepository.findOne({ where: { id: follower[0].followingId } });
+    return userT;
+});
+exports.getFollowingUsers = getFollowingUsers;

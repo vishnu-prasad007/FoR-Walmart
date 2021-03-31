@@ -18,6 +18,16 @@ const getUserFollowersEmailAddressPhoneNo = async (user: User) => {
 }
 
 
+const getFollowingUsers =async(userId:string) =>{
+    let userRepository = connection.getRepository(User);
+    let followUserRepository = connection.getRepository(Follower);
+    let follower = await followUserRepository.query(`SELECT * FROM follower WHERE followedById = ${userId}`);
+    let userT = await userRepository.findOne({where:{id:follower[0].followingId}});
+    return userT;
+}
+
+
 export {
-    getUserFollowersEmailAddressPhoneNo
+    getUserFollowersEmailAddressPhoneNo,
+    getFollowingUsers
 }
