@@ -9,19 +9,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserFollowers = void 0;
+exports.getUserFollowersEmailAddressPhoneNo = void 0;
 const connection_1 = require("../config/connection");
 const authentication_1 = require("../models/authentication");
 const follower_1 = require("../models/follower");
 const user_1 = require("../models/user");
-const getUserFollowers = (user) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserFollowersEmailAddressPhoneNo = (user) => __awaiter(void 0, void 0, void 0, function* () {
     let userRepository = connection_1.connection.getRepository(user_1.User);
     let userAuthenticationRepository = connection_1.connection.getRepository(authentication_1.UserAuthentication);
     let followUserRepository = connection_1.connection.getRepository(follower_1.Follower);
     let follower = yield followUserRepository.query(`SELECT * FROM follower WHERE followingId = ${user.id}`);
     let userT = yield userRepository.findOne({ where: { id: follower[0].followedById } });
-    console.log(follower[0].followedById);
+    // console.log(follower[0].followedById);
     let userEmail = yield userAuthenticationRepository.findOne({ where: { user: userT } });
-    console.log(userEmail.emailPhoneNo);
+    // console.log(userEmail.emailPhoneNo);
+    return userEmail.emailPhoneNo;
 });
-exports.getUserFollowers = getUserFollowers;
+exports.getUserFollowersEmailAddressPhoneNo = getUserFollowersEmailAddressPhoneNo;

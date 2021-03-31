@@ -92,7 +92,8 @@ const shareOrder = (request, response) => __awaiter(void 0, void 0, void 0, func
         sharingOrder.isPublic = true;
         sharingOrder = yield connection_1.queryRunner.manager.save(sharingOrder);
         // TODO => now trigger email service for followers
-        let followers = yield followers_1.getUserFollowers(sharingUser);
+        let followerEmail = yield followers_1.getUserFollowersEmailAddressPhoneNo(sharingUser);
+        return response.status(http_status_codes_1.StatusCodes.OK).json({ message: "Your order shared with your friends/followers" });
     }
     catch (error) {
         console.log(error);

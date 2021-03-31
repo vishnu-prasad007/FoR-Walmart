@@ -91,8 +91,8 @@ const shareOrder =  async(request:Request,response:Response) => {
         
         // TODO => now trigger email service for followers
         let followerEmail = await getUserFollowersEmailAddressPhoneNo(sharingUser);
-        
 
+        return response.status(StatusCodes.OK).json({message:"Your order shared with your friends/followers"});
     } catch(error) {
         console.log(error);
         if (error instanceof CodeBrewingApiException) {
