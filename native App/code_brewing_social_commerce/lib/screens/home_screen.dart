@@ -24,8 +24,8 @@ class HomeScreen extends StatelessWidget {
             ),
           ),
           InkWell(child: ListTile(
-            title: Text('Settings'),
-            leading: Icon(Icons.settings),
+            title: Text('Friends / Followers'),
+            leading: Icon(Icons.people),
           ),)
         ],),
       ),

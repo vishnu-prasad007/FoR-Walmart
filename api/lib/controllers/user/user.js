@@ -9,13 +9,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getProfile = exports.followUser = exports.getUser = void 0;
+exports.getProfile = exports.getFollowingUsers = exports.followUser = exports.getUser = void 0;
 const http_status_codes_1 = require("http-status-codes");
 const connection_1 = require("../../config/connection");
 const follower_1 = require("../../models/follower");
 const order_1 = require("../../models/products/order");
 const user_1 = require("../../models/user");
 const exception_1 = require("../../utils/exception");
+const followers_1 = require("../../services/followers");
 const getUser = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const user = yield connection_1.connection.getRepository(user_1.User).find({ where: { id: response.locals.userId } });
@@ -97,6 +98,22 @@ const getProfile = (request, response) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.getProfile = getProfile;
+const getFollowingUsers = (request, response) => __awaiter(void 0, void 0, void 0, function* () {
+    var userId = response.locals.userId;
+    try {
+        let followings = yield followers_1.getFollowingUsersList(userId);
+        return response.status(http_status_codes_1.StatusCodes.OK).json({ following: followings });
+    }
+    catch (error) {
+        if (error instanceof exception_1.CodeBrewingApiException) {
+            response.status(error.HttpStatusCode).json({ message: error.message });
+        }
+        else {
+            response.status(http_status_codes_1.StatusCodes.INTERNAL_SERVER_ERROR).json({ message: http_status_codes_1.ReasonPhrases.INTERNAL_SERVER_ERROR });
+        }
+    }
+});
+exports.getFollowingUsers = getFollowingUsers;
 const filterPrivateOrders = (order) => {
     return order.isPublic;
 };

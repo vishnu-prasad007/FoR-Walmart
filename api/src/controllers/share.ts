@@ -150,10 +150,10 @@ const switchProfileToPublic = async(request:Request,response:Response) =>{
             return response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
         }
     }
-
-
-
 }
+
+
+
 
 
 

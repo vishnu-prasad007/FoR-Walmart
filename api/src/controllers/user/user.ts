@@ -7,7 +7,7 @@ import { Item } from '../../models/products/items';
 import { Orders } from '../../models/products/order';
 import { User } from '../../models/user';
 import { CodeBrewingApiException } from '../../utils/exception';
-
+import {getFollowingUsersList} from '../../services/followers';
 
 
 const getUser = async(request:Request,response:Response) => {
@@ -95,6 +95,26 @@ const getProfile = async(request:Request,response:Response) => {
 
 }
 
+
+const getFollowingUsers  = async(request:Request,response:Response) => {
+    var userId = response.locals.userId;
+    try {
+
+        let followings =  await getFollowingUsersList(userId);
+        return response.status(StatusCodes.OK).json({following:followings});   
+    } catch(error) {
+        if (error instanceof CodeBrewingApiException) {
+            response.status(error.HttpStatusCode).json({ message: error.message });
+        } else {
+            response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
+        }
+    }
+}
+
+
+
+
+
 const filterPrivateOrders = (order:Orders) =>{
     return order.isPublic;
 }
@@ -103,5 +123,6 @@ const filterPrivateOrders = (order:Orders) =>{
 export{
     getUser,
     followUser,
+    getFollowingUsers,
     getProfile
 }

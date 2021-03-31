@@ -27,7 +27,24 @@ const getFollowingUsers =async(userId:string) =>{
 }
 
 
+
+const getFollowingUsersList =async(userId:string) =>{
+    let userList :Array<User> = [];
+    let userRepository = connection.getRepository(User);
+    let followUserRepository = connection.getRepository(Follower);
+    let follower = await followUserRepository.query(`SELECT * FROM follower WHERE followedById = ${userId}`);
+   // let userT = await userRepository.findOne({where:{id:follower[0].followingId}});
+   for (let index = 0; index < follower.length; index++) {
+       let user = await userRepository.findOne({where:{id:follower[index].followingId}});
+       userList.push(user);
+   }
+    return userList;
+}
+
+
+
 export {
     getUserFollowersEmailAddressPhoneNo,
-    getFollowingUsers
+    getFollowingUsers,
+    getFollowingUsersList
 }
