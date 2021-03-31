@@ -14,6 +14,7 @@ const typeorm_1 = require("typeorm");
 const authentication_1 = require("./authentication");
 const follower_1 = require("./follower");
 const order_1 = require("./products/order");
+const story_1 = require("./story");
 let User = class User {
 };
 __decorate([
@@ -48,6 +49,10 @@ __decorate([
     typeorm_1.OneToMany(type => follower_1.Follower, follower => follower.following),
     __metadata("design:type", Array)
 ], User.prototype, "followers", void 0);
+__decorate([
+    typeorm_1.OneToMany(() => story_1.Story, story => story.user),
+    __metadata("design:type", Array)
+], User.prototype, "storys", void 0);
 User = __decorate([
     typeorm_1.Entity()
 ], User);

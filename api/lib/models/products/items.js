@@ -11,6 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Item = void 0;
 const typeorm_1 = require("typeorm");
+const story_1 = require("../story");
 const category_1 = require("./category");
 const order_1 = require("./order");
 let Item = class Item {
@@ -47,6 +48,10 @@ __decorate([
     typeorm_1.OneToMany(() => order_1.Orders, order => order.item),
     __metadata("design:type", Array)
 ], Item.prototype, "orders", void 0);
+__decorate([
+    typeorm_1.OneToMany(() => story_1.Story, story => story.item),
+    __metadata("design:type", Array)
+], Item.prototype, "storys", void 0);
 Item = __decorate([
     typeorm_1.Entity()
 ], Item);

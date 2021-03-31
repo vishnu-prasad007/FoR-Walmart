@@ -1,11 +1,14 @@
 import { Request, Response } from 'express';
 import { ReasonPhrases, StatusCodes } from 'http-status-codes';
 import { connection, queryRunner } from '../config/connection';
+import { Item } from '../models/products/items';
 import { Orders } from '../models/products/order';
 import { User } from '../models/user';
 import { findMatchedUser } from '../services/contacts';
 import { getUserFollowersEmailAddressPhoneNo } from '../services/followers';
+import { sendmail } from '../services/mailer';
 import { CodeBrewingApiException } from '../utils/exception';
+import { addToStory } from './story';
 
 
 const Profile_Private_To_Public = 2001;
@@ -91,7 +94,8 @@ const shareOrder =  async(request:Request,response:Response) => {
         
         // TODO => now trigger email service for followers
         let followerEmail = await getUserFollowersEmailAddressPhoneNo(sharingUser);
-
+        addToStory(sharingUser,sharingOrder.item);
+        await sendmail('vishnu007vprasad@gmail.com','New order from your friend','Vishnu has bought something new');
         return response.status(StatusCodes.OK).json({message:"Your order shared with your friends/followers"});
     } catch(error) {
         console.log(error);
@@ -101,8 +105,8 @@ const shareOrder =  async(request:Request,response:Response) => {
             return response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
         }
     }
-
 }
+
 
 
 

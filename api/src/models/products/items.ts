@@ -1,4 +1,5 @@
 import {Column,Entity,JoinColumn,ManyToOne,OneToMany,PrimaryGeneratedColumn} from 'typeorm';
+import { Story } from '../story';
 import { Category } from './category';
 import { Orders } from './order';
 
@@ -28,4 +29,7 @@ export class Item {
 
     @OneToMany(()=>Orders,order => order.item)
     orders: Orders[]
+
+    @OneToMany(()=>Story,story=>story.item)
+    storys:Story[];
 }

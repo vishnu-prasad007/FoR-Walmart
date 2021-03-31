@@ -1,7 +1,6 @@
 import 'package:code_brewing_social_commerce/services/login_api_service.dart';
 import 'package:code_brewing_social_commerce/utils/http_exception.dart';
 import 'package:code_brewing_social_commerce/utils/route_constants.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:code_brewing_social_commerce/utils/validations.dart';
 

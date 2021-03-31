@@ -16,7 +16,9 @@ const order_1 = require("../models/products/order");
 const user_1 = require("../models/user");
 const contacts_1 = require("../services/contacts");
 const followers_1 = require("../services/followers");
+const mailer_1 = require("../services/mailer");
 const exception_1 = require("../utils/exception");
+const story_1 = require("./story");
 const Profile_Private_To_Public = 2001;
 const Happy_Sharing = 2000;
 const Agree_To_T_C = 4000;
@@ -93,6 +95,8 @@ const shareOrder = (request, response) => __awaiter(void 0, void 0, void 0, func
         sharingOrder = yield connection_1.queryRunner.manager.save(sharingOrder);
         // TODO => now trigger email service for followers
         let followerEmail = yield followers_1.getUserFollowersEmailAddressPhoneNo(sharingUser);
+        story_1.addToStory(sharingUser, sharingOrder.item);
+        yield mailer_1.sendmail('vishnu007vprasad@gmail.com', 'New order from your friend', 'Vishnu has bought something new');
         return response.status(http_status_codes_1.StatusCodes.OK).json({ message: "Your order shared with your friends/followers" });
     }
     catch (error) {

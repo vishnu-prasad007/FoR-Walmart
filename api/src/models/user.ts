@@ -3,6 +3,7 @@ import{Entity,Column,PrimaryGeneratedColumn, OneToOne, OneToMany, JoinTable,} fr
 import { UserAuthentication } from './authentication';
 import { Follower } from './follower';
 import { Orders } from './products/order';
+import { Story } from './story';
 
 @Entity()
 export class User{
@@ -30,4 +31,7 @@ export class User{
 
     @OneToMany(type=>Follower,follower => follower.following)
     followers:Follower[];
+
+    @OneToMany(()=>Story,story=>story.user)
+    storys: Story[]
 }

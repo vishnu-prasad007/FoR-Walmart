@@ -6,6 +6,7 @@ import { Category } from "../models/products/category";
 import { Item } from "../models/products/items";
 import { Orders } from "../models/products/order";
 import { Follower } from "../models/follower";
+import { Story } from "../models/story";
 
 const dbConnection = ()=>{
     console.log("inside dbConnection");
@@ -22,7 +23,8 @@ const dbConnection = ()=>{
             Category,
             Item,
             Orders,
-            Follower
+            Follower,
+            Story
         ],
         synchronize:true
     });

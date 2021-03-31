@@ -9,6 +9,7 @@ const category_1 = require("../models/products/category");
 const items_1 = require("../models/products/items");
 const order_1 = require("../models/products/order");
 const follower_1 = require("../models/follower");
+const story_1 = require("../models/story");
 const dbConnection = () => {
     console.log("inside dbConnection");
     typeorm_1.createConnection({
@@ -24,7 +25,8 @@ const dbConnection = () => {
             category_1.Category,
             items_1.Item,
             order_1.Orders,
-            follower_1.Follower
+            follower_1.Follower,
+            story_1.Story
         ],
         synchronize: true
     });

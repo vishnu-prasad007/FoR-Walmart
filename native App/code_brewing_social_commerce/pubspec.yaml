@@ -30,7 +30,6 @@ dependencies:
   shared_preferences: ^2.0.5
   contacts_service: ^0.4.6
   permission_handler: ^6.1.1
-  firebase_messaging: ^9.1.0
   intl: ^0.17.0
 
 
