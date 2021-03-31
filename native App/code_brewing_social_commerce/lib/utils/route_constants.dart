@@ -9,6 +9,7 @@ abstract class RoutePath {
   static const String productDetailScreen = '/product-detail';
   static const String orderSummaryScreen = '/order-summary';
   static const String termsAndConditionScreen = '/terms-condition'; 
+  static const String friendsAndFollowingScreen = '/friends-following';
 }
 
 var screens = <String,Widget>{
@@ -17,6 +18,7 @@ RoutePath.homeScreen:HomeScreen(),
 RoutePath.productsScreen:ProductsScreen(),
 RoutePath.productDetailScreen:ProductDetailScreen(),
 RoutePath.orderSummaryScreen:OrderSummaryScreen(),
-RoutePath.termsAndConditionScreen:TermsAndConditionsScreen()
+RoutePath.termsAndConditionScreen:TermsAndConditionsScreen(),
+RoutePath.friendsAndFollowingScreen:FriendsAndFollowersScreen()
 
 };

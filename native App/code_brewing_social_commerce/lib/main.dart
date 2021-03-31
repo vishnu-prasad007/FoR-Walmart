@@ -1,3 +1,4 @@
+import 'package:code_brewing_social_commerce/providers/following_user_provider.dart';
 import 'package:code_brewing_social_commerce/routes.dart';
 import 'package:code_brewing_social_commerce/screens/screens.dart';
 import 'package:code_brewing_social_commerce/utils/theme.dart';
@@ -19,6 +20,7 @@ class MyApp extends StatelessWidget {
       ChangeNotifierProvider(create: (_) => LoginProvider()),
       ChangeNotifierProvider(create: (_) => HomeProvider(),),
       ChangeNotifierProvider(create: (_) => Productsprovider()),
+        ChangeNotifierProvider(create: (_) => FollowingUserProvider()),
     ],child: MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',

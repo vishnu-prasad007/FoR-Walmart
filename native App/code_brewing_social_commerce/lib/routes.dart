@@ -37,6 +37,10 @@ class RouteGenerator {
       case RoutePath.termsAndConditionScreen:
         return MaterialPageRoute(builder: (_) => TermsAndConditionsScreen());
         break;
+
+      case RoutePath.friendsAndFollowingScreen:
+        return MaterialPageRoute(builder: (_) => FriendsAndFollowersScreen());
+        break;
     }
   }
 }

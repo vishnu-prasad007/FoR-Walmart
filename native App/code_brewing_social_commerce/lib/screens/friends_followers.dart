@@ -1,6 +1,9 @@
+import 'package:code_brewing_social_commerce/models/following_user_model.dart';
+import 'package:code_brewing_social_commerce/providers/following_user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class FriendsAndFollowers extends StatelessWidget {
+class FriendsAndFollowersScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -8,13 +11,19 @@ class FriendsAndFollowers extends StatelessWidget {
       appBar: AppBar(
         title: Text('Friends and Followers'),
       ),
-      body: ListView.builder(itemBuilder: (context,int index){
-        return ListTile(
-          leading: Icon(Icons.account_circle),
-          title: Text('dfdfg'),
-        );
-        
-      }),
+      body: Consumer<FollowingUserProvider>(builder: (context,followingUserProvider,_){
+        followingUserProvider.initFollowingUserRequest();
+        return ListView.builder(itemCount: followingUserProvider.followingUsers.following.length,itemBuilder: (context,int index){
+          return ListTile(
+            onTap: (){
+
+            },
+            leading: Icon(Icons.account_circle),
+            title: Text(followingUserProvider.followingUsers.following[index].name),
+            subtitle: Text('2 followers'),
+          ); 
+        });
+      },)
     );
   }
 }

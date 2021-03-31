@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:code_brewing_social_commerce/models/following_user_model.dart';
 import 'package:code_brewing_social_commerce/models/login_model.dart';
 import 'package:code_brewing_social_commerce/models/terms_model.dart';
 import 'package:code_brewing_social_commerce/providers/home_provider.dart';
@@ -86,3 +87,28 @@ Future<bool> switchProfile() async {
   }
 }
 
+
+
+Future<FollowingUserModel> getFollowingUsers() async {
+  final accessToken = HomeProvider.accessToken;
+  var response = await http.get(Uri.http(ApiEndpoint.apiBaseUrl,ApiEndpoint.users + '/me' + ApiEndpoint.following),headers:<String, String>{
+        'Content-Type': 'application/json',
+        'authorization': accessToken,
+      });
+
+  print(response.body);
+
+  if(response.statusCode == HttpStatus.ok) {
+    Map followingUserJson = jsonDecode(response.body);
+    var followinfUserModel = FollowingUserModel.fromJson(followingUserJson);
+    print(followinfUserModel);
+    return followinfUserModel;
+
+  } else if(response.statusCode == HttpStatus.unauthorized) {
+    throw new HttpUnauthorizedException();
+  } else {
+    throw new HttpInternalServerException();
+  }
+
+
+}

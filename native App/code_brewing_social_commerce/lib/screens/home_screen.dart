@@ -1,4 +1,5 @@
 import 'package:code_brewing_social_commerce/providers/providers.dart';
+import 'package:code_brewing_social_commerce/utils/route_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,6 +26,9 @@ class HomeScreen extends StatelessWidget {
           ),
           InkWell(child: ListTile(
             title: Text('Friends / Followers'),
+            onTap: (){
+              Navigator.pushNamed(context, RoutePath.friendsAndFollowingScreen);
+            },
             leading: Icon(Icons.people),
           ),)
         ],),
