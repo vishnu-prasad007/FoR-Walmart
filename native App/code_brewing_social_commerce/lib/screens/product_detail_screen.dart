@@ -64,8 +64,8 @@ class ProductDetailScreen extends StatelessWidget {
             child: ElevatedButton(
               onPressed: () async {
                 var res = await addOrder(similarProducts.product.id);
-                if(res)
-                  Navigator.pushNamed(context, RoutePath.orderSummaryScreen,arguments: similarProducts.product);
+                if(res['orderId']!=null)
+                  Navigator.pushNamed(context, RoutePath.orderSummaryScreen,arguments: OrderSummary(res['orderId'], similarProducts));
               },
               child: Text('Buy Now'),
             ),

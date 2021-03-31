@@ -19,7 +19,7 @@ const Agree_To_T_C = 4000;
 const shareTerms = async (request: Request, response: Response) => {
 
     var shareUserId = response.locals.userId;
-
+    var orderId = request.body.orderId;
     try {
 
         let userRespository = await connection.getRepository(User);
@@ -28,12 +28,15 @@ const shareTerms = async (request: Request, response: Response) => {
             // user agreed to T&C 
             if (!shareUser.isProfilePublic) {
                 // if user profile is not public switch user profile from private to public
-                shareUser.isProfilePublic = true;
-                await queryRunner.connect();
-                shareUser = await queryRunner.manager.save(shareUser);
+                // shareUser.isProfilePublic = true;
+                // await queryRunner.connect();
+                // shareUser = await queryRunner.manager.save(shareUser);
                 return response.status(StatusCodes.OK).json({ message: "Your profile is private, by clicking share we switch your profile to public", errorCode: Profile_Private_To_Public });
+            }else {
+                await shareOrderBackground(shareUserId,orderId);
+                return response.status(StatusCodes.OK).json({ message: "Happy sharing", errorCode: Happy_Sharing });
+                
             }
-            return response.status(StatusCodes.OK).json({ message: "Happy sharing", errorCode: Happy_Sharing });
         } else {
             // user not aggred to T&C
             return response.status(StatusCodes.OK).json({ message: "In order to proceed further, you need to agree to our Terms & Conditions", errorCode: Agree_To_T_C });
@@ -108,6 +111,50 @@ const shareOrder =  async(request:Request,response:Response) => {
 }
 
 
+const shareOrderBackground = async (userId:any,orderId) =>{
+     // user Repository
+     let userRepository = connection.getRepository(User);
+     // order repository
+     let orderRepository = connection.getRepository(Orders);
+
+     let sharingUser = await userRepository.findOne({where:{id:userId}});
+     let sharingOrder = await orderRepository.findOne({where:{id:orderId},relations:['item']});
+     await queryRunner.connect()
+     sharingOrder.isPublic = true;
+     sharingOrder = await queryRunner.manager.save(sharingOrder); 
+     
+     // TODO => now trigger email service for followers
+     let followerEmail = await getUserFollowersEmailAddressPhoneNo(sharingUser);
+     addToStory(sharingUser,sharingOrder.item);
+     await sendmail('vishnu007vprasad@gmail.com','New order from your friend','Vishnu has bought something new');
+}
+
+
+
+const switchProfileToPublic = async(request:Request,response:Response) =>{
+    var userId = response.locals.userId;
+    try {
+        // user Repository
+        let userRepository = connection.getRepository(User);
+        var shareUser = await userRepository.findOne({ where: { id: userId } });
+        shareUser.isProfilePublic = true;
+        await queryRunner.connect();
+        await queryRunner.manager.save(shareUser);
+        return response.status(StatusCodes.OK).json({message:"Profile Switched to public"});
+
+    } catch(error) {
+        console.log(error);
+        if (error instanceof CodeBrewingApiException) {
+            return response.status(error.HttpStatusCode).json({ message: error.message });
+        } else {
+            return response.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: ReasonPhrases.INTERNAL_SERVER_ERROR });
+        }
+    }
+
+
+
+}
+
 
 
 const contactList = (contacts: any) => {
@@ -121,5 +168,6 @@ const filterprivateProfile = (user:User) =>{
 export {
     agreeToTerms,
     shareTerms,
-    shareOrder
+    shareOrder,
+    switchProfileToPublic
 }

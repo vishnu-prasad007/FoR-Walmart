@@ -30,7 +30,7 @@ class RouteGenerator {
       case RoutePath.orderSummaryScreen:
         return MaterialPageRoute(
             builder: (_) => OrderSummaryScreen(
-                  product: routeSettings.arguments,
+                  orderSummary: routeSettings.arguments,
                 ));
         break;
 

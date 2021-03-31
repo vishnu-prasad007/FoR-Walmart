@@ -11,7 +11,9 @@ abstract class ApiEndpoint {
   static const items = '/items';
   static const share = '/share';
   static const terms = '/terms';
+  static const users = '/users';
   static const agree = '/agree';
+  static const switchProfile = '/profile-switch';
 }
 
 abstract class SecureStorageKey{

@@ -10,13 +10,10 @@ void showShareBottomUpSheet(BuildContext context) {
           alignment: Alignment.center,
           child: Wrap(
             children: <Widget>[
+              ListTile(title:Text('We shared your purchase with your firends/followers')),
               ListTile(
-                  leading: Icon(Icons.account_circle_rounded),
-                  title: Text('Add to Stories'),
-                  onTap: () => {}),
-              ListTile(
-                leading: Icon(Icons.ios_share),
-                title: Text('Share'),
+                leading: Icon(Icons.link),
+                title: Text('Get a link'),
                 onTap: () => {},
               ),
             ],

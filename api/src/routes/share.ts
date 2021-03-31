@@ -8,6 +8,7 @@ const shareRouter = express.Router();
 shareRouter.post("/terms",verifyAccessToken,shareTerms);
 shareRouter.post("/agree",verifyAccessToken,agreeToTerms);
 
+
 export {
     shareRouter
 }

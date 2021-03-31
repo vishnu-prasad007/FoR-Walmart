@@ -4,6 +4,7 @@ import 'package:code_brewing_social_commerce/models/terms_model.dart';
 import 'package:code_brewing_social_commerce/providers/home_provider.dart';
 import 'package:code_brewing_social_commerce/utils/route_constants.dart';
 import 'package:code_brewing_social_commerce/utils/storage.dart';
+import 'package:code_brewing_social_commerce/widgets/share_bottomup_sheet.dart';
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -13,7 +14,8 @@ import 'package:code_brewing_social_commerce/utils/http_exception.dart';
 import 'package:code_brewing_social_commerce/models/contact_model.dart';
 import 'package:code_brewing_social_commerce/models/friends_suggestion_model.dart';
 
-Future<TermsModel> checkShareTerms(BuildContext context) async {
+Future<TermsModel> checkShareTerms(BuildContext context,int orderId) async {
+  print('order id'+orderId.toString());
   final accessToken = HomeProvider.accessToken;
   var response = await http.post(
     Uri.http(ApiEndpoint.apiBaseUrl, ApiEndpoint.share + ApiEndpoint.terms),
@@ -21,6 +23,7 @@ Future<TermsModel> checkShareTerms(BuildContext context) async {
       'Content-Type': 'application/json',
       'authorization': accessToken,
     },
+    body: jsonEncode(<String,dynamic>{"orderId":orderId})
   );
 
   if (response.statusCode == HttpStatus.ok) {
@@ -29,14 +32,6 @@ Future<TermsModel> checkShareTerms(BuildContext context) async {
     var termsModel = TermsModel.fromJson(json);
     print(termsModel);
     return termsModel;
-    if (termsModel.errorCode == 4000) {
-      // navigate to instruction screen
-      Navigator.pushNamed(context, RoutePath.termsAndConditionScreen);
-    } else if (termsModel.errorCode == 2000) {
-      // display msg on profile switch button;
-    } else {
-      // open bottom sheet
-    }
   } else if (response.statusCode == HttpStatus.unauthorized) {
     throw new HttpUnauthorizedException();
   } else {
@@ -73,3 +68,21 @@ Future<void> shareOrder(String orderId) async {
       },);
     print(response.body);
 }
+
+
+Future<bool> switchProfile() async {
+  final accessToken = HomeProvider.accessToken;
+  var resposne = await http.post(Uri.http(ApiEndpoint.apiBaseUrl,ApiEndpoint.users + ApiEndpoint.switchProfile),headers: <String, String>{
+        'Content-Type': 'application/json',
+        'authorization': accessToken,
+      });
+
+  if(resposne.statusCode == HttpStatus.ok) {
+    return true;
+  } else if(resposne.statusCode == HttpStatus.unauthorized) {
+    throw new HttpUnauthorizedException();
+  } else {
+    throw new HttpInternalServerException();
+  }
+}
+

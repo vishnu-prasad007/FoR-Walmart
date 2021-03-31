@@ -46,7 +46,7 @@ Future<ProductModel> getProducts(String categoryId) async {
     throw new HttpInternalServerException();
 }
 
-Future<bool> addOrder(int itemId) async {
+Future<Map<String,int>> addOrder(int itemId) async {
  
   final accessToken = HomeProvider.accessToken;
   var response =
@@ -60,8 +60,8 @@ Future<bool> addOrder(int itemId) async {
   if (response.statusCode == HttpStatus.created) {
     Map order = jsonDecode(response.body);
     var orderModel = OrderModel.fromJson(order);
-    print(orderModel);
-    return true;
+    print(orderModel.orderId);
+    return {'orderId':orderModel.orderId};
   } else if (response.statusCode == HttpStatus.unauthorized) {
     throw new HttpUnauthorizedException();
   } else
