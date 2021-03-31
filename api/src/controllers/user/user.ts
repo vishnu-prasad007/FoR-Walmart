@@ -80,7 +80,7 @@ const getProfile = async(request:Request,response:Response) => {
                 profile.orders = profile.orders.filter(filterPrivateOrders);
                 if(profile.orders.length == 0)
                 profile.orders = null;
-                return response.status(StatusCodes.OK).json({profile})
+                return response.status(StatusCodes.OK).json({profile:profile})
         }
       throw new CodeBrewingApiException("Profile not found",StatusCodes.NOT_FOUND);
 

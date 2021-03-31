@@ -83,7 +83,7 @@ const getProfile = (request, response) => __awaiter(void 0, void 0, void 0, func
             profile.orders = profile.orders.filter(filterPrivateOrders);
             if (profile.orders.length == 0)
                 profile.orders = null;
-            return response.status(http_status_codes_1.StatusCodes.OK).json({ profile });
+            return response.status(http_status_codes_1.StatusCodes.OK).json({ profile: profile });
         }
         throw new exception_1.CodeBrewingApiException("Profile not found", http_status_codes_1.StatusCodes.NOT_FOUND);
     }

@@ -1,4 +1,5 @@
 import 'package:code_brewing_social_commerce/screens/products_screen.dart';
+import 'package:code_brewing_social_commerce/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:code_brewing_social_commerce/screens/screens.dart';
 
@@ -10,6 +11,8 @@ abstract class RoutePath {
   static const String orderSummaryScreen = '/order-summary';
   static const String termsAndConditionScreen = '/terms-condition'; 
   static const String friendsAndFollowingScreen = '/friends-following';
+  static const String profileScreen = '/profile';
+
 }
 
 var screens = <String,Widget>{
@@ -19,6 +22,6 @@ RoutePath.productsScreen:ProductsScreen(),
 RoutePath.productDetailScreen:ProductDetailScreen(),
 RoutePath.orderSummaryScreen:OrderSummaryScreen(),
 RoutePath.termsAndConditionScreen:TermsAndConditionsScreen(),
-RoutePath.friendsAndFollowingScreen:FriendsAndFollowersScreen()
-
+RoutePath.friendsAndFollowingScreen:FriendsAndFollowersScreen(),
+RoutePath.profileScreen:ProfileScreen()
 };

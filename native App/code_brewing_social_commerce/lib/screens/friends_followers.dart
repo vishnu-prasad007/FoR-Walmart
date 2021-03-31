@@ -12,11 +12,13 @@ class FriendsAndFollowersScreen extends StatelessWidget {
         title: Text('Friends and Followers'),
       ),
       body: Consumer<FollowingUserProvider>(builder: (context,followingUserProvider,_){
-        followingUserProvider.initFollowingUserRequest();
+        if(followingUserProvider.apiReq ?? false){
+          followingUserProvider.initFollowingUserRequest();
+        }
         return ListView.builder(itemCount: followingUserProvider.followingUsers.following.length,itemBuilder: (context,int index){
           return ListTile(
             onTap: (){
-
+                followingUserProvider.initFollowingProfile(context,followingUserProvider.followingUsers.following[index].id);
             },
             leading: Icon(Icons.account_circle),
             title: Text(followingUserProvider.followingUsers.following[index].name),

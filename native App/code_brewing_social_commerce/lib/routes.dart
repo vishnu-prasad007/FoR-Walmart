@@ -1,4 +1,5 @@
 import 'package:code_brewing_social_commerce/screens/products_screen.dart';
+import 'package:code_brewing_social_commerce/screens/profile_screen.dart';
 import 'package:code_brewing_social_commerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:code_brewing_social_commerce/utils/route_constants.dart';
@@ -40,6 +41,13 @@ class RouteGenerator {
 
       case RoutePath.friendsAndFollowingScreen:
         return MaterialPageRoute(builder: (_) => FriendsAndFollowersScreen());
+        break;
+
+      case RoutePath.profileScreen:
+        return MaterialPageRoute(
+            builder: (_) => ProfileScreen(
+                  profileModel: routeSettings.arguments,
+                ));
         break;
     }
   }

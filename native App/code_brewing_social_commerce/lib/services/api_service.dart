@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:code_brewing_social_commerce/models/following_user_model.dart';
 import 'package:code_brewing_social_commerce/models/login_model.dart';
+import 'package:code_brewing_social_commerce/models/profile_model.dart';
 import 'package:code_brewing_social_commerce/models/terms_model.dart';
 import 'package:code_brewing_social_commerce/providers/home_provider.dart';
 import 'package:code_brewing_social_commerce/utils/route_constants.dart';
@@ -109,6 +110,29 @@ Future<FollowingUserModel> getFollowingUsers() async {
   } else {
     throw new HttpInternalServerException();
   }
+}
 
+
+
+Future<ProfileModel> getProfile(String profileId) async {
+  print('inside getProfile');
+  final accessToken = HomeProvider.accessToken;
+  var response = await http.get(Uri.http(ApiEndpoint.apiBaseUrl,ApiEndpoint.users + ApiEndpoint.profile + '/' + profileId),headers:<String, String>{
+        'Content-Type': 'application/json',
+        'authorization': accessToken,
+      });
+
+  if(response.statusCode == HttpStatus.ok) {
+    Map profileModelJson = jsonDecode(response.body);
+    var profileModel = ProfileModel.fromJson(profileModelJson['profile']);
+    return profileModel;
+  } else if(response.statusCode == HttpStatus.notFound) {
+      throw new HttpNotFoundException();
+
+  } else if(response.statusCode == HttpStatus.unauthorized) {
+    throw new HttpUnauthorizedException();
+  } else {
+    throw new HttpInternalServerException();
+  }
 
 }
