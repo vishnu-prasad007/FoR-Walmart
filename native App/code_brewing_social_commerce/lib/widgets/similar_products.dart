@@ -12,3 +12,8 @@ class OrderSummary {
   final SimilarProducts similarProducts;
   OrderSummary(this.orderId,this.similarProducts);
 }
+
+
+class StoriesScreen {
+  
+}

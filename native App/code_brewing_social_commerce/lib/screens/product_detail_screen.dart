@@ -36,7 +36,7 @@ class ProductDetailScreen extends StatelessWidget {
           ),
           Container(
             padding: EdgeInsets.only(left: 8.0),
-            child: Text(similarProducts.product.price.toString()),
+            child: Text('₹ ' +similarProducts.product.price.toString(),style: TextStyle(color: Colors.green,fontWeight: FontWeight.bold,fontSize: 21.0),),
             alignment: Alignment.topLeft,
           ),
           SizedBox(

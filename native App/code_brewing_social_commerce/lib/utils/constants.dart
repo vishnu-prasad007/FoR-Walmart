@@ -16,6 +16,7 @@ abstract class ApiEndpoint {
   static const following = '/following';
   static const switchProfile = '/profile-switch';
   static const profile = '/profiles';
+  static const stories = '/story';
 }
 
 abstract class SecureStorageKey{

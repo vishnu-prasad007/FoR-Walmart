@@ -65,7 +65,8 @@ const agreeToTerms = (request, response) => __awaiter(void 0, void 0, void 0, fu
         let userRespository = yield connection_1.connection.getRepository(user_1.User);
         var user = yield userRespository.findOne({ where: { id: userId } });
         var c = contactList(contacts);
-        let musers = yield contacts_1.findMatchedUser(c);
+        var followingUserList = yield followers_1.getFollowingUsersList(userId);
+        let musers = yield contacts_1.findMatchedUser(c, followingUserList);
         musers = musers.filter(filterprivateProfile);
         user.termsandConditionStatus = true;
         user.isProfilePublic = true;

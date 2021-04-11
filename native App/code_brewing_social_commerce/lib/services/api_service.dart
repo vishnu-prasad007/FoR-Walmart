@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:code_brewing_social_commerce/models/following_user_model.dart';
 import 'package:code_brewing_social_commerce/models/login_model.dart';
+import 'package:code_brewing_social_commerce/models/product_data_model.dart';
 import 'package:code_brewing_social_commerce/models/profile_model.dart';
+import 'package:code_brewing_social_commerce/models/stories_model.dart';
 import 'package:code_brewing_social_commerce/models/terms_model.dart';
+import 'package:code_brewing_social_commerce/providers/following_user_provider.dart';
 import 'package:code_brewing_social_commerce/providers/home_provider.dart';
 import 'package:code_brewing_social_commerce/utils/route_constants.dart';
 import 'package:code_brewing_social_commerce/utils/storage.dart';
@@ -51,8 +54,12 @@ Future<bool> agreeTerms(String contacts) async {
       },
       body: jsonEncode(<String, String>{"contacts":contacts}));
     if(response.statusCode == HttpStatus.ok) {
-      // Map friendSuggestionJson = jsonDecode(response.body);
-      // var friendSuggestionModel = FriendsSuggestionModel.fromJson(friendSuggestionJson);
+      print(response.body);
+       Map friendSuggestionJson = jsonDecode(response.body);
+       print(friendSuggestionJson);
+       var friendSuggestionModel = FriendsSuggestionModel.fromJson(friendSuggestionJson);
+       print(friendSuggestionModel.message);
+       FollowingUserProvider.friendsSuggestionModel = friendSuggestionModel;
       return true;
     } else if(response.statusCode == HttpStatus.unauthorized) {
       throw new HttpUnauthorizedException();
@@ -96,13 +103,13 @@ Future<FollowingUserModel> getFollowingUsers() async {
         'Content-Type': 'application/json',
         'authorization': accessToken,
       });
-
+  print('inside getFollowingUser()');
   print(response.body);
 
   if(response.statusCode == HttpStatus.ok) {
     Map followingUserJson = jsonDecode(response.body);
     var followinfUserModel = FollowingUserModel.fromJson(followingUserJson);
-    print(followinfUserModel);
+    print(followinfUserModel.following);
     return followinfUserModel;
 
   } else if(response.statusCode == HttpStatus.unauthorized) {
@@ -111,6 +118,8 @@ Future<FollowingUserModel> getFollowingUsers() async {
     throw new HttpInternalServerException();
   }
 }
+
+
 
 
 
@@ -124,7 +133,9 @@ Future<ProfileModel> getProfile(String profileId) async {
 
   if(response.statusCode == HttpStatus.ok) {
     Map profileModelJson = jsonDecode(response.body);
+    print(response.body);
     var profileModel = ProfileModel.fromJson(profileModelJson['profile']);
+    print(profileModelJson);
     return profileModel;
   } else if(response.statusCode == HttpStatus.notFound) {
       throw new HttpNotFoundException();
@@ -134,5 +145,50 @@ Future<ProfileModel> getProfile(String profileId) async {
   } else {
     throw new HttpInternalServerException();
   }
+}
+
+
+Future<void> followUser(String followingUserId) async{
+    final accessToken = HomeProvider.accessToken;
+    final response = await http.post(Uri.http(ApiEndpoint.apiBaseUrl, ApiEndpoint.users + '/' + followingUserId + '/follow'),headers:<String, String>{
+        'Content-Type': 'application/json',
+        'authorization': accessToken,
+      });
+
+  if(response.statusCode == HttpStatus.ok) {
+    // success
+     print('You started following');
+  } else if(response.statusCode == HttpStatus.unauthorized) {
+    throw new HttpUnauthorizedException();
+  } else {
+    throw new HttpInternalServerException();
+  }
+
+}
+
+
+
+Future<StoriesModel> getStories() async{
+  final accessToken = HomeProvider.accessToken;
+  var response = await http.get(Uri.http(ApiEndpoint.apiBaseUrl, ApiEndpoint.stories),headers:<String, String>{
+        'Content-Type': 'application/json',
+        'authorization': accessToken,
+      });
+
+  print(response.body);
+  if(response.statusCode == HttpStatus.ok) {
+    Map storiesJson = jsonDecode(response.body);
+    var storiesModel = StoriesModel.fromJson(storiesJson);
+    print(storiesModel);
+    return storiesModel;
+  } else if(response.statusCode == HttpStatus.unauthorized)
+    throw new HttpUnauthorizedException();
+    else if (response.statusCode == HttpStatus.notFound) 
+   ///   throw new HttpNotFoundException();
+    print('dfdg');
+    else {
+      throw new HttpInternalServerException();
+    }
+
 
 }

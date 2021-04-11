@@ -1,3 +1,4 @@
+import 'package:code_brewing_social_commerce/screens/more_stories.dart';
 import 'package:code_brewing_social_commerce/screens/products_screen.dart';
 import 'package:code_brewing_social_commerce/screens/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ abstract class RoutePath {
   static const String termsAndConditionScreen = '/terms-condition'; 
   static const String friendsAndFollowingScreen = '/friends-following';
   static const String profileScreen = '/profile';
+  static const String moreStoriesScreen = '/more-stories';
 
 }
 
@@ -23,5 +25,6 @@ RoutePath.productDetailScreen:ProductDetailScreen(),
 RoutePath.orderSummaryScreen:OrderSummaryScreen(),
 RoutePath.termsAndConditionScreen:TermsAndConditionsScreen(),
 RoutePath.friendsAndFollowingScreen:FriendsAndFollowersScreen(),
-RoutePath.profileScreen:ProfileScreen()
+RoutePath.profileScreen:ProfileScreen(),
+RoutePath.moreStoriesScreen:MoreStories()
 };

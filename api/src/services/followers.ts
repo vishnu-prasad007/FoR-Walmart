@@ -36,6 +36,7 @@ const getFollowingUsersList =async(userId:string) =>{
    // let userT = await userRepository.findOne({where:{id:follower[0].followingId}});
    for (let index = 0; index < follower.length; index++) {
        let user = await userRepository.findOne({where:{id:follower[index].followingId}});
+       if(user !=null || user !=undefined)
        userList.push(user);
    }
     return userList;

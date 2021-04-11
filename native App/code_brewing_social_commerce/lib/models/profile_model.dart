@@ -1,3 +1,4 @@
+import 'package:code_brewing_social_commerce/models/product_data_model.dart';
 import 'package:code_brewing_social_commerce/models/shared_order_model.dart';
 import 'package:code_brewing_social_commerce/models/user_model.dart';
 import 'package:json_annotation/json_annotation.dart';

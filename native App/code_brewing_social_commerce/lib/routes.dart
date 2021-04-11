@@ -1,3 +1,4 @@
+import 'package:code_brewing_social_commerce/screens/more_stories.dart';
 import 'package:code_brewing_social_commerce/screens/products_screen.dart';
 import 'package:code_brewing_social_commerce/screens/profile_screen.dart';
 import 'package:code_brewing_social_commerce/screens/screens.dart';
@@ -49,6 +50,12 @@ class RouteGenerator {
                   profileModel: routeSettings.arguments,
                 ));
         break;
+
+      case RoutePath.moreStoriesScreen:
+          return MaterialPageRoute(builder: (_)=>MoreStories(
+            storiesDataModel: routeSettings.arguments,
+          ));
+          break;
     }
   }
 }

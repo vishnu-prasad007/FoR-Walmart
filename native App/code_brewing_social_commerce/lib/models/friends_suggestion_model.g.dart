@@ -10,9 +10,11 @@ FriendsSuggestionModel _$FriendsSuggestionModelFromJson(
     Map<String, dynamic> json) {
   return FriendsSuggestionModel(
     json['message'] as String,
-  )..users = json['users'] == null
-      ? null
-      : UserModel.fromJson(json['users'] as Map<String, dynamic>);
+    (json['users'] as List)
+        ?.map((e) =>
+            e == null ? null : UserModel.fromJson(e as Map<String, dynamic>))
+        ?.toList(),
+  );
 }
 
 Map<String, dynamic> _$FriendsSuggestionModelToJson(

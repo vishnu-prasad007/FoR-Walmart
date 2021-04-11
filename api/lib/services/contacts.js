@@ -12,14 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findMatchedUser = void 0;
 const connection_1 = require("../config/connection");
 const authentication_1 = require("../models/authentication");
-const findMatchedUser = (contacts) => __awaiter(void 0, void 0, void 0, function* () {
+const findMatchedUser = (contacts, users) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(users);
     let userAuthenticationRespository = connection_1.connection.getRepository(authentication_1.UserAuthentication);
     let matchedUsers = [];
     for (let index = 0; index < contacts.length; index++) {
         const contact = contacts[index];
         let userAuthentication = yield userAuthenticationRespository.findOne({ where: { emailPhoneNo: contact.phoneEmail, }, relations: ['user'] });
-        if (userAuthentication != null || userAuthentication != undefined) {
-            matchedUsers.push(userAuthentication.user);
+        if ((userAuthentication != null || userAuthentication != undefined)) {
+            for (var j = 0; j < users.length; j++) {
+                if (users[j].id != userAuthentication.id) {
+                    matchedUsers.push(userAuthentication.user);
+                }
+            }
         }
     }
     return matchedUsers;

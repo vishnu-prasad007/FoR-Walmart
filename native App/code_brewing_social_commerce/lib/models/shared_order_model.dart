@@ -1,5 +1,6 @@
 
 import 'package:code_brewing_social_commerce/models/item_model.dart';
+import 'package:code_brewing_social_commerce/models/product_data_model.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'shared_order_model.g.dart';
@@ -9,7 +10,7 @@ class SharedOrderModel {
     int id;
     String createdAt;
     bool isPublic;
-    ItemModel item;
+    ProductDataModel item;
 
     SharedOrderModel(this.id,this.createdAt,this.isPublic,this.item);
 

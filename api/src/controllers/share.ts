@@ -5,7 +5,7 @@ import { Item } from '../models/products/items';
 import { Orders } from '../models/products/order';
 import { User } from '../models/user';
 import { findMatchedUser } from '../services/contacts';
-import { getUserFollowersEmailAddressPhoneNo } from '../services/followers';
+import { getFollowingUsersList, getUserFollowersEmailAddressPhoneNo } from '../services/followers';
 import { sendmail } from '../services/mailer';
 import { CodeBrewingApiException } from '../utils/exception';
 import { addToStory } from './story';
@@ -61,7 +61,8 @@ const agreeToTerms = async (request: Request, response: Response) => {
         let userRespository = await connection.getRepository(User);
         var user = await userRespository.findOne({ where: { id: userId } });
         var c = contactList(contacts);
-        let musers = await findMatchedUser(c);
+        var followingUserList = await getFollowingUsersList(userId);
+        let musers = await findMatchedUser(c,followingUserList);
          musers = musers.filter(filterprivateProfile);
         user.termsandConditionStatus = true;
         user.isProfilePublic = true;
@@ -164,6 +165,7 @@ const contactList = (contacts: any) => {
 const filterprivateProfile = (user:User) =>{
     return user.isProfilePublic;
 }
+
 
 export {
     agreeToTerms,

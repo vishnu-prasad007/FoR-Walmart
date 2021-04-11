@@ -8,9 +8,9 @@ part 'friends_suggestion_model.g.dart';
 @JsonSerializable()
 class FriendsSuggestionModel {
   String message;
-  UserModel users;
+  List<UserModel> users;
 
-  FriendsSuggestionModel(this.message);
+  FriendsSuggestionModel(this.message,this.users);
 
   factory FriendsSuggestionModel.fromJson(Map<String,dynamic> json) => _$FriendsSuggestionModelFromJson(json);
   Map<String,dynamic> toJson() => _$FriendsSuggestionModelToJson(this);

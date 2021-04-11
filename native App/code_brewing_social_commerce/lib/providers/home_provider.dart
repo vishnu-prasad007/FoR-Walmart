@@ -2,6 +2,8 @@ import 'package:code_brewing_social_commerce/models/category_data_model.dart';
 import 'package:code_brewing_social_commerce/models/category_model.dart';
 import 'package:code_brewing_social_commerce/models/product_data_model.dart';
 import 'package:code_brewing_social_commerce/models/product_model.dart';
+import 'package:code_brewing_social_commerce/models/stories_model.dart';
+import 'package:code_brewing_social_commerce/services/api_service.dart';
 import 'package:code_brewing_social_commerce/services/products_api_service.dart';
 import 'package:code_brewing_social_commerce/utils/constants.dart';
 import 'package:code_brewing_social_commerce/utils/http_exception.dart';
@@ -15,6 +17,7 @@ class HomeProvider extends ChangeNotifier {
  ProductModel productModel;
  static SecureStorage secureStorage;
  static String accessToken;
+ StoriesModel storiesModel;
 
  HomeProvider() {
    print('11111');
@@ -31,6 +34,12 @@ class HomeProvider extends ChangeNotifier {
   void initStartupAsyncFunctions() async {
     await initCategory();
     await initAccessToken();
+    await initStories();
+  }
+
+  Future<void> initHomeRefresh() async {
+    await initCategory();
+      await initStories();
   }
 
  List<CategoryDataModel> get getCategoryList {
@@ -51,6 +60,11 @@ class HomeProvider extends ChangeNotifier {
    print('request completed');
   } 
 
+  StoriesModel get getStoriesModel {
+    return storiesModel;
+  }
+
+
 
   Future<void> initPrducts(BuildContext context,String categoryId) async {
 
@@ -63,4 +77,16 @@ class HomeProvider extends ChangeNotifier {
       print('Oops');
     }
   }
+
+
+  Future<void> initStories() async {
+    try {
+      storiesModel = await getStories();
+      notifyListeners();
+    } on HttpInternalServerException {
+      print('Server error');
+    }
+  }
+
+
 }

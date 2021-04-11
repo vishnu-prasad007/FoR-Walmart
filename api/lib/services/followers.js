@@ -42,7 +42,8 @@ const getFollowingUsersList = (userId) => __awaiter(void 0, void 0, void 0, func
     // let userT = await userRepository.findOne({where:{id:follower[0].followingId}});
     for (let index = 0; index < follower.length; index++) {
         let user = yield userRepository.findOne({ where: { id: follower[index].followingId } });
-        userList.push(user);
+        if (user != null || user != undefined)
+            userList.push(user);
     }
     return userList;
 });
